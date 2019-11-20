@@ -10,10 +10,10 @@ def test__default_mirror_configs_exception():
         _default_mirror_configs("./not-exist", "DEBUG")
 
 
-def test__default_mirror_configs_jinja():
+def test__default_mirror_configs_jinja(tmpdir):
     """test jinja parsing is correct/valid"""
     ll = "DEBUG"
-    mirror_dir = "./mirror_dir"
+    mirror_dir = tmpdir.mkdir("mirror_dir").strpath
     configs = _default_mirror_configs(mirror_dir, ll)
 
     for conf in configs:

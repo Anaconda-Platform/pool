@@ -3,7 +3,7 @@
 
 package:
   name: pool
-  version: '0.1.1'
+  version: '0.2'
 
 source:
   path: .
@@ -12,34 +12,30 @@ build:
   number: 0
   script: python setup.py install --single-version-externally-managed --record=record.txt
   entry_points:
-    - pool=repo_mirror.pool:main
+    - airgap=repo_mirror.airgap:main
   noarch: python
 
 requirements:
-  build:
-    - python >=3.6
-    - setuptools
-    - urllib3
-    - pyaml
-    - boto3
-    - sh
+        #build:
+        #  - python >=3.6
+        #  - setuptools
+        #  - urllib3
+        #  - ruamel_yaml
+        #  - boto3
+        #  - cas-mirror
 
   run:
     - python >=3.6
-    - urllib3
-    - pyaml
+    - ruamel-yaml
+    - jinja2
     - boto3
-    - sh
+    - cas-mirror
 
 test:
   source_files:
     - tests/*
   requires:
     - pytest
-    - pyaml
-    - boto3
-    - mock
-    - sh
   commands:
     - pytest
 
