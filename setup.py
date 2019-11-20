@@ -4,8 +4,8 @@ import setuptools
 import repo_mirror
 
 
-requirements = ['boto3', 'pyyaml', 'urllib3', 'sh']
-test_requirements = ['mock', 'nose', 'flake8', 'pytest']
+requirements = []#['boto3', 'ruamel_yaml', 'cas-mirror']
+test_requirements = ['pytest']
 
 
 setuptools.setup(
@@ -20,9 +20,10 @@ setuptools.setup(
     },
     entry_points={
         'console_scripts': [
-            'pool=repo_mirror.pool:main'
+            'airgap=repo_mirror.airgap:main'
         ]
     },
     packages=['repo_mirror'],
+    package_data={'repo_mirror': ['templates/*.yaml']},
     zip_safe=False
 )
