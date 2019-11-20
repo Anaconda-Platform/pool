@@ -1,0 +1,18 @@
+# For some reason, I cannot do inheritance
+mirror_dir: {{ mirror_dir }}/main
+platforms:
+  - osx-64
+  - win-64
+  - linux-64
+fetch_installers: False
+verify_checksum: True
+log_dir: {{ log_dir }}
+log_level: {{ log_level }}
+python_versions: []
+pkg_list: []
+license_blacklist: []
+blacklist: []
+whitelist: []
+channels:
+  - https://repo.anaconda.com/pkgs/main/
+  - https://repo.anaconda.com/pkgs/pro/
