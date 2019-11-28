@@ -1,9 +1,11 @@
 # Conda build file for package accord
 # To build: conda build accord
 
+{% set data = load_setup_py_data() %}
+
 package:
-  name: pool
-  version: '0.2'
+  name: repo_mirror
+  version: {{ data.get('version') }}
 
 source:
   path: .
@@ -16,7 +18,9 @@ build:
   noarch: python
 
 requirements:
-        #build:
+  host:
+    - python >=3.6,<3.8
+  #  - setuptools
         #  - python >=3.6
         #  - setuptools
         #  - urllib3
@@ -25,11 +29,12 @@ requirements:
         #  - cas-mirror
 
   run:
-    - python >=3.6
+    - python >=3.6,<3.8
     - ruamel_yaml
     - jinja2
     - boto3
     - cas-mirror
+    - cytoolz # cas-mirror dependency that doesn't get installed correctly
 
 test:
   source_files:
