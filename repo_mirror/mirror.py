@@ -43,8 +43,8 @@ def platform_tarballs(output_location, source_dir):
     Expect folder to contain pkgs/{platform} with subfolder for each platform
     """
     channel = os.path.split(source_dir)[1]
-    for platform in os.scandir(os.path.join(source_dir,'pkgs')):
-        fname = channel + '-' + platform + '.tar.gz'
+    for platform in os.scandir(os.path.join(source_dir, 'pkgs')):
+        fname = channel + '-' + platform.name + '.tar.gz'
         tarname = os.path.join(output_location, fname)
         with tarfile.open(tarname, 'w:gz') as tgz:
             tgz.add(platform.path, recursive=True)
