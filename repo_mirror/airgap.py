@@ -114,11 +114,12 @@ def main():
     # create tarball
     files_to_upload = []
     for channel in channels:
-        try:
-            tarname = platform_tarballs(channel)
-        except Exception as ex:
-            _logger.info(f'platform tar creation of {channel} failed')
-            continue
+        tarname = platform_tarballs(args.mirror_dir, channel)
+        #try:
+        #    tarname = platform_tarballs(channel)
+        #except Exception as ex:
+        #    _logger.info(f'platform tar creation of {channel} failed')
+        #    continue
 
         files_to_upload.append(tarname)
 
