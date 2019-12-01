@@ -68,7 +68,7 @@ def _parse_args():
                         '--aws-bucket',
                         dest='aws_bucket',
                         action='store',
-                        default='airgap-tarball',
+                        default='airgap.svc.anaconda.com',
                         help='aws bucket to which the tarballs are uploaded')
     parser.add_argument('-n',
                         '--upload-folder',
