@@ -1,5 +1,6 @@
 import os
 import logging
+from pathlib import Path
 from cas_mirror.config import Config
 from cas_mirror.exceptions import ConfigError
 from cas_mirror.sync_pkgs import sync_pkgs
@@ -34,19 +35,37 @@ def download_pkgs(config_file):
     else:
         _logger.info('Installer synchronization disabled or "remote_url" not set.')
 
-    # return path for each mirror
-    return config.mirror_dir
+    # return path for each channel
+    return Path(config.mirror_dir)
 
 
-def platform_tarballs(output_location, source_dir):
+def platform_tarballs(output_location: Path,
+                      channel_dir: Path):
     """
     Expect folder to contain pkgs/{platform} with subfolder for each platform
     """
-    channel = os.path.split(source_dir)[1]
-    for platform in os.scandir(os.path.join(source_dir, 'pkgs')):
-        fname = channel + '-' + platform.name + '.tar.gz'
-        tarname = os.path.join(output_location, fname)
-        with tarfile.open(tarname, 'w:gz') as tgz:
-            tgz.add(platform.path, recursive=True)
+    tarballs = []
+    channel_name = channel_dir.parts[-1]
+    for platform in channel_dir.glob('pkgs/*'):
+        fname = channel_name + '-' + platform.parts[-1] + '.tar.gz'
+        tarname = output_location.joinpath(fname)
+        with tarfile.open(tarname.absolute().as_posix(), 'w:gz') as tgz:
+            tgz.add(platform.absolute().as_posix(),
+                    recursive=True)
 
-    return tarname
+        tarballs.append(tarname)
+
+    return tarballs
+
+
+def channel_tarballs(output_dir: Path,
+                     channel_dir: Path):
+    """
+    Create tarball for each channel for all platforms
+
+    :param output_dir:
+    :param channel_dir:
+    :return:
+    """
+    tarballs = []
+    pass

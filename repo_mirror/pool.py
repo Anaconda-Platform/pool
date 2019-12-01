@@ -1,7 +1,6 @@
-
+from typing import List
+from pathlib import Path
 from boto3.s3 import transfer
-
-
 import boto3
 import logging
 
@@ -9,20 +8,21 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-def upload_files(aws_bucket, all_tarballs, monthly_directory):
+def upload_files(aws_bucket: str,
+                 monthly_directory: str,
+                 all_tarballs: List[Path]):
     upload_config = transfer.TransferConfig(
         max_concurrency=10,
         use_threads=True
     )
     s3 = boto3.client('s3')
-    #monthly_directory = time.strftime("%Y_%m")
-    for file_name in all_tarballs:
-        print(f'Uploading {file_name} to S3')
+    for tar in all_tarballs:
+        name = tar.parts[-1]
         s3.upload_file(
-            file_name,
+            tar.absolute().as_posix(),
             aws_bucket,
-            f'{monthly_directory}/{file_name}',
+            f'{monthly_directory}/{name}',
             ExtraArgs={'ACL': 'public-read'},
             Config=upload_config
         )
-        _logger.info(f'uploaded {file_name} to {aws_bucket}')
+        _logger.info(f'uploaded {tar} to {aws_bucket}')
