@@ -16,9 +16,10 @@ $ airgap -h
 ```
 
 TODO:
-#. Revisit logging; not sure we need a file & stdout?
-#. Finish documenting functions
-#. Move conda package to a more official location
-#. Generate and add md5 checksum files
-#. Should we tarballs per channel as well?
-#. Any other validation that we may want to do?
+
+- [ ] Revisit logging; not sure we need a file & stdout?
+- [ ] Finish documenting functions
+- [ ] Move conda package to a more official location
+- [ ] Generate and add md5 checksum files
+- [ ] Should we tarballs per channel as well?
+- [ ] Any other validation that we may want to do?
