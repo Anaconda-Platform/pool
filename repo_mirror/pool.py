@@ -3,20 +3,19 @@ from boto3.s3 import transfer
 
 
 import boto3
-import time
 import logging
 
 
 _logger = logging.getLogger(__name__)
 
 
-def upload_files(aws_bucket, all_tarballs):
+def upload_files(aws_bucket, all_tarballs, monthly_directory):
     upload_config = transfer.TransferConfig(
         max_concurrency=10,
         use_threads=True
     )
     s3 = boto3.client('s3')
-    monthly_directory = time.strftime("%Y_%m")
+    #monthly_directory = time.strftime("%Y_%m")
     for file_name in all_tarballs:
         print(f'Uploading {file_name} to S3')
         s3.upload_file(

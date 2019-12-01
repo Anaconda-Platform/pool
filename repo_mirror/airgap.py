@@ -1,4 +1,5 @@
 import os
+import time
 import logging
 from argparse import ArgumentParser
 from jinja2 import Environment, PackageLoader
@@ -66,6 +67,12 @@ def _parse_args():
                         action='store',
                         default='airgap-tarball',
                         help='aws bucket to which the tarballs are uploaded')
+    parser.add_argument('-n',
+                        '--upload-folder',
+                        dest='folder_name',
+                        action='store',
+                        default=time.strftime("%Y_%m"),
+                        help='upload to this folder; mostly for testing')
     args = parser.parse_args()
 
     # generate default yaml config files in mirror_dir
@@ -89,11 +96,12 @@ def main():
     # mirror packages
     channels = []
     for config_file in args.mirror_configs:
-        try:
-            channel = download_pkgs(config_file)
-        except Exception as ex:
-            _logger.info(f'mirror of {config_file} failed')
-            continue
+        channel = download_pkgs(config_file)
+        #try:
+        #    channel = download_pkgs(config_file)
+        #except Exception as ex:
+        #    _logger.info(f'mirror of {config_file} failed')
+        #    continue
 
         channels.append(channel)
 
@@ -115,7 +123,7 @@ def main():
         files_to_upload.append(tarname)
 
     # upload files
-    upload_files(args.aws_bucket, files_to_upload)
+    upload_files(args.aws_bucket, files_to_upload, args.folder_name)
 
 
 if __name__ == '__main__':
