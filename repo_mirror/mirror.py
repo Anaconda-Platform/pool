@@ -26,7 +26,7 @@ def download_pkgs(config_file):
     try:
         sync_pkgs(config)
     except Exception as ex:
-        _logger.error('Sync error: {}'.format(ex.message))
+        _logger.error('Sync error: {}'.format(ex))
         return
 
     # fetch installers;
