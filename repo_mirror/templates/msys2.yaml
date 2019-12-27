@@ -1,0 +1,10 @@
+# For some reason, I cannot do inheritance
+mirror_dir: {{ mirror_dir }}/msys2
+platforms:
+  - win-64
+fetch_installers: False
+verify_checksum: True
+log_dir: {{ log_dir }}
+log_level: {{ log_level }}
+channels:
+  - https://repo.anaconda.com/pkgs/msys2/

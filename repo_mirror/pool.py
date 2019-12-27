@@ -1,82 +1,28 @@
-
+from typing import List
+from pathlib import Path
 from boto3.s3 import transfer
-
-
 import boto3
-import time
-import sh
+import logging
 
 
-from repo_mirror.mirror import Mirror
+_logger = logging.getLogger(__name__)
 
 
-def upload_files(mirror, all_tarballs):
+def upload_files(aws_bucket: str,
+                 monthly_directory: str,
+                 all_tarballs: List[Path]):
     upload_config = transfer.TransferConfig(
         max_concurrency=10,
         use_threads=True
     )
     s3 = boto3.client('s3')
-    monthly_directory = time.strftime("%Y_%m")
-    for file_name in all_tarballs:
-        print(f'Uploading {file_name} to S3')
+    for tar in all_tarballs:
+        name = tar.parts[-1]
         s3.upload_file(
-            file_name,
-            mirror.aws_bucket,
-            f'{monthly_directory}/{file_name}',
+            tar.absolute().as_posix(),
+            aws_bucket,
+            f'{monthly_directory}/{name}',
             ExtraArgs={'ACL': 'public-read'},
             Config=upload_config
         )
-
-
-def main():
-    mirror = Mirror()
-    successful_tarballs = []
-
-    # Run through all of the default channels
-    for channel in mirror.channels.keys():
-        print(f'Building yaml file for {channel}')
-        mirror.build_yaml(channel)
-        for platform in mirror.channels[channel]['platforms']:
-            temp_channel = f'{channel}-{platform}'
-            try:
-                print(f'Running mirror for {temp_channel}')
-                mirror.run_mirror(temp_channel)
-            except Exception:
-                print(f'{temp_channel} had an issue running the mirror')
-                continue
-
-            try:
-                print(f'Generating file list for {temp_channel}')
-                tree = sh.Command('tree')
-                tree(
-                    f'{mirror.mirror_directory}/{temp_channel}',
-                    _out=(
-                        f'{mirror.mirror_directory}/{temp_channel}'
-                        f'/{temp_channel}.txt'
-                    )
-                )
-            except Exception:
-                print(f'{temp_channel} had an issue getting the file list')
-                pass
-
-            try:
-                temp_file = f'{temp_channel}_{time.strftime("%Y%m%d")}.tar.gz'
-                print(f'Creating tarball for {temp_channel}')
-                sh.tar(
-                    '-czf',
-                    temp_file,
-                    '-C',
-                    f'{mirror.mirror_directory}/',
-                    temp_channel
-                )
-                successful_tarballs.append(temp_file)
-            except Exception:
-                print(f'{temp_channel} failed to generate the repo tarball')
-                pass
-
-    print('Starting upload to S3')
-    upload_files(mirror, successful_tarballs)
-
-
-if __name__ == '__main__':
-    main()
+        _logger.info(f'uploaded {tar} to {aws_bucket}')

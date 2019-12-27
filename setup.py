@@ -4,12 +4,12 @@ import setuptools
 import repo_mirror
 
 
-requirements = ['boto3', 'pyyaml', 'urllib3', 'sh']
-test_requirements = ['mock', 'nose', 'flake8', 'pytest']
+requirements = ['boto3', 'ruamel.yaml', 'jinja2']
+test_requirements = ['pytest']
 
 
 setuptools.setup(
-    name='pool',
+    name='repo_mirror',
     version=repo_mirror.__version__,
     description='Anaconda utility to generate airgap tarball files',
     author='Dave Kludt',
@@ -20,9 +20,10 @@ setuptools.setup(
     },
     entry_points={
         'console_scripts': [
-            'pool=repo_mirror.pool:main'
+            'airgap=repo_mirror.airgap:main'
         ]
     },
-    packages=['repo_mirror'],
+    packages=setuptools.find_packages(),
+    package_data={'repo_mirror': ['templates/*.yaml']},
     zip_safe=False
 )
