@@ -10,11 +10,12 @@ The easiest way to use it is to `conda install` the package in a conda
 environment:
 
 ```
-$ conda create -nairgap -c jsandhu repo_mirror
+$ conda create -nairgap -c jsandhu -c ae5-admin repo_mirror
 $ conda activate airgap
 $ airgap -h
 ```
 
+__NOTE__: `cas-mirror` is pulled from `ae5-admin` and `repo_mirror` is currently hosted on `jsandhu`.
 __NOTE__: `cas-mirror` raises exception for `main` channel since it adds `platform` object that does not get converted to a dict or json correctly.
 The hack for now is to add following code snippet on [sync_pkgs.py#L148](https://github.com/Anaconda-Platform/cas-mirror/blob/5.3.1-dkludt/cas_mirror/sync_pkgs.py#L146)
 
