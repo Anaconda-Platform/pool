@@ -1,10 +1,9 @@
-# For some reason, I cannot do inheritance
+{% extends "base.yaml" %}
 mirror_dir: {{ mirror_dir }}/msys2
+{% block platforms %}
 platforms:
   - win-64
-fetch_installers: False
-verify_checksum: True
-log_dir: {{ log_dir }}
-log_level: {{ log_level }}
-channels:
+{% endblock %}
+{% block channels %}
   - https://repo.anaconda.com/pkgs/msys2/
+{% endblock %}
