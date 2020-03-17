@@ -22,8 +22,8 @@ def _default_mirror_configs(mirror_dir: Path, log_level: str) -> Tuple[Path]:
     env = Environment(loader=PackageLoader('repo_mirror', 'templates'))
 
     configs = []
-    for temp in ('anaconda.yaml', 'r.yaml', 'msys2.yaml'):
-        temp = env.get_template(temp)
+    for name in ('anaconda.yaml', 'r.yaml', 'msys2.yaml'):
+        temp = env.get_template(name)
         cf = mirror_dir.joinpath(temp.name)
 
         temp.stream(mirror_dir=mirror_dir.as_posix(),

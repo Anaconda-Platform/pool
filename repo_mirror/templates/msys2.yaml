@@ -1,5 +1,5 @@
-{% extends "base.yaml" %}
 mirror_dir: {{ mirror_dir }}/msys2
+{% extends "base.yaml" %}
 {% block platforms %}
 platforms:
   - win-64
