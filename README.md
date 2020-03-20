@@ -7,7 +7,8 @@ Tool for creating an airgapped archive of conda packages.
 
 ### create archive ###
 The easiest way to use it is to `conda install` the package in a conda
-environment:
+environment. Make sure you get both `repo_mirro` and `cas_mirror` from jsandhu channel
+since it is conda build of a forked repo:
 
 ```
 $ conda create -nairgap -c jsandhu repo_mirror cas_mirror
@@ -24,5 +25,6 @@ TODO:
 - [ ] Finish documenting functions
 - [ ] Move conda package to a more official location
 - [ ] Generate and add md5 checksum files
+- [ ] Add tests
 - [ ] Should we tarballs per channel as well?
 - [ ] Any other validation that we may want to do?
